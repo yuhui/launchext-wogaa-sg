@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>WOGAA Extension Configuration</title>
+    <link rel="stylesheet" href="../dist/css/coral.min.css">
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <script src="../dist/js/coral.min.js"></script>
+  </head>
+  <body class="coral--light coral-Body--S u-coral-margin">
+    <h3 class="coral-Heading--M">No configuration necessary</h3>
+
+    <section class="coral-Well">
+      <p>
+        WOGAA collects data across Singapore government agency websites to improve government
+        services with data.
+      </p>
+      <p>
+        <a class="coral-Link" href="https://wogaa.sg" target="_blank" rel="noopener,noreferrer">
+          Learn more about WOGAA.
+        </a>
+      </p>
+
+      <h4 class="coral-Heading--S coral-Heading--light">How this Extension works</h4>
+      <ol class="coral-List">
+        <li class="coral-List-item">
+          Create a new Rule or open an existing Rule, for example, one with a "Library Loaded" Event.
+        </li>
+        <li class="coral-List-item">
+          <b>Add the <span class="text-underline">"Implement Informational Service"</span>
+            Action.</b>
+        </li>
+        <li class="coral-List-item">
+          <i>(optional)</i> If you want to track transactions, add the
+            <span class="text-underline">"Implement Transactional Service"</span> Action to your
+            appropriate Rule(s) and configure it as instructed.
+        </li>
+        <li class="coral-List-item">
+          <i>(optional)</i> If you want to correlate Sentiments with your agency's data, add the
+            <span class="text-underline">"Correlate Sentiments with Agency's Data"</span> Action to
+            your appropriate Rule(s) and configure it as instructed.
+        </li>
+      </ol>
+
+      <coral-alert>
+        <coral-alert-header>
+          Important! Works with Singapore government-registered agency websites only.
+        </coral-alert-header>
+        <coral-alert-content>
+          <p>
+            WOGAA can only be used in websites that have been registered with WOGAA. Implementing
+            WOGAA in unregistered websites has no effect at all.
+          </p>
+        </coral-alert-content>
+      </coral-alert>
+    </section>
+
+    <hr class="coral-Divider--S">
+
+    <footer class="coral--lightest coral-Body--XS">
+      <div id="donations">
+        <p>
+          Donate: <a class="coral-Link" href="https://paypal.me/yuhuibc" target="_blank">PayPal</a>
+        </p>
+      </div>
+      <div id="support">
+        <p>
+          Support Information
+        </p>
+        <ul class="coral-List">
+          <li class="coral-List-item">
+            <a class="coral-Link" href="https://github.com/yuhui/launchext-wogaa-sg/issues" target="_blank">
+              Open a ticket
+            </a>
+          </li>
+          <li class="coral-List-item">
+            <a class="coral-Link" href="https://github.com/yuhui/launchext-wogaa-sg/blob/master/CHANGELOG.md" target="_blank">
+              Read change log
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <p>
+        Copyright &copy; 2024 Yuhui. All rights reserved.
+      </p>
+      <p>
+        <a class="coral-Link" href="https://yuhui.sg/terms-of-service.html" target="_blank">Terms of Service</a> |
+        <a class="coral-Link" href="https://yuhui.sg/privacy-policy.html" target="_blank">Privacy Policy</a> |
+        <a class="coral-Link" href="https://yuhui.sg/cookie-policy.html" target="_blank">Cookie Policy</a> |
+        <a class="coral-Link" href="https://yuhui.sg/acceptable-use-policy.html" target="_blank">Acceptable Use Policy</a>
+      </p>
+    </footer>
+
+    <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script>
+      const FORM_ID = 'extension-configuration';
+
+      window.extensionBridge.register({
+        init: (info) => {
+          if (info.settings) {}
+        },
+
+        getSettings: () => {
+          return {};
+        },
+
+        validate: () => {
+          return true;
+        }
+      });
+    </script>
+  </body>
+</html>

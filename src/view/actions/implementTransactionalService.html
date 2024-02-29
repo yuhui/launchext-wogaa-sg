@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Implement Transactional Service</title>
+    <link rel="stylesheet" href="../dist/css/coral.min.css">
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <script src="../dist/js/coral.min.js"></script>
+  </head>
+  <body class="coral--light coral-Body--S u-coral-margin">
+    <form id="action-configuration" class="coral-Form coral-FormGroup--labelsAbove">
+      <h4 class="coral-Heading--M">Implement Transactional Service</h4>
+
+      <div id="type-container" class="coral-FormGroup-item">
+        <label id="type-label" for="type" class="coral-FormGroup-itemLabel">
+          Select the type of transactional service
+          <coral-icon icon="Asterisk" class="coral-FieldLabel-requiredIcon" size="XXS" alt="required"></coral-icon>
+        </label>
+        <div class="coral-InputGroup" style="width: 100%;" role="presentation">
+          <coral-select id="type" name="type" class="coral-Form-field" labelledby="type-label"  placeholder="Choose a tracking type" style="width: 100%;">
+            <coral-select-item value="start">Start</coral-select-item>
+            <coral-select-item value="complete">Complete</coral-select-item>
+          </coral-select>
+        </div>
+      </div>
+
+      <div id="tracking-id-container" class="coral-FormGroup-item">
+        <label for="tracking-id" class="coral-FormGroup-itemLabel coral-FieldLabel--left">
+          Tracking ID created at WOGAA for the transaction.
+          <coral-icon icon="Asterisk" class="coral-FieldLabel-requiredIcon" size="XXS" alt="required"></coral-icon>
+        </label>
+        <div class="coral-InputGroup" style="width: 100%;" role="presentation">
+          <input id="tracking-id" name="trackingId" value="" class="coral-InputGroup-input" is="coral-textfield" placeholder="tracking_id">
+          <span class="coral-InputGroup-button">
+            <button is="coral-button" icon="data" title="Data Element selector"></button>
+          </span>
+          <coral-icon icon="info" title="Info" size="S"></coral-icon>
+          <coral-tooltip target="_prev" variant="info" placement="right" offset="8">
+            Enter the <code class="coral-Code--S">tracking_ID</code> that was given to you when you
+            registered your Transaction Service(s) onto WOGAA.
+          </coral-tooltip>
+        </div>
+      </div>
+
+      <div id="unique-transaction-id-container" class="coral-FormGroup-item">
+        <label for="unique-transaction-id" class="coral-FormGroup-itemLabel coral-FieldLabel--left">
+          Unique identifier for the transaction.
+        </label>
+        <div class="coral-InputGroup" style="width: 100%;" role="presentation">
+          <input id="unique-transaction-id" name="uniqueTransactionId" value="" class="coral-InputGroup-input" is="coral-textfield" placeholder="transaction_id">
+          <span class="coral-InputGroup-button">
+            <button is="coral-button" icon="data" title="Data Element selector"></button>
+          </span>
+          <span style="margin-left: 1em; white-space: nowrap;">
+            <a class="coral-Link" href="https://docs.wogaa.sg/web-implementation/setup-guide/transactional-service-implementation/#optional-implement-custom-transactionid" rel="noopener noreferrer" target="_blank">
+              Learn more.
+            </a>
+          </span>
+        </div>
+      </div>
+    </form>
+
+    <section class="coral-Well">
+      <h4 class="coral-Heading--S coral-Heading--light">How this Action works</h4>
+      <p>
+        When this Action runs, it tracks the Transactional Service for the selected type to WOGAA.
+      </p>
+      <p>
+        <a class="coral-Link" href="https://docs.wogaa.sg/web-implementation/setup-guide/transactional-service-implementation/" rel="noopener noreferrer" target="_blank">
+          Learn more about Transactional Service implementation.
+        </a>
+      </p>
+    </section>
+
+    <hr class="coral-Divider--S">
+
+    <footer class="coral--lightest coral-Body--XS">
+      <div id="donations">
+        <p>
+          Donate: <a class="coral-Link" href="https://paypal.me/yuhuibc" target="_blank">PayPal</a>
+        </p>
+      </div>
+      <div id="support">
+        <p>
+          Support Information
+        </p>
+        <ul class="coral-List">
+          <li class="coral-List-item">
+            <a class="coral-Link" href="https://github.com/yuhui/launchext-wogaa-sg/issues" target="_blank">
+              Open a ticket
+            </a>
+          </li>
+          <li class="coral-List-item">
+            <a class="coral-Link" href="https://github.com/yuhui/launchext-wogaa-sg/blob/master/CHANGELOG.md" target="_blank">
+              Read change log
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <p>
+        Copyright &copy; 2024 Yuhui. All rights reserved.
+      </p>
+      <p>
+        <a class="coral-Link" href="https://yuhui.sg/terms-of-service.html" target="_blank">Terms of Service</a> |
+        <a class="coral-Link" href="https://yuhui.sg/privacy-policy.html" target="_blank">Privacy Policy</a> |
+        <a class="coral-Link" href="https://yuhui.sg/cookie-policy.html" target="_blank">Cookie Policy</a> |
+        <a class="coral-Link" href="https://yuhui.sg/acceptable-use-policy.html" target="_blank">Acceptable Use Policy</a>
+      </p>
+    </footer>
+
+    <script src="https://assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
+    <script src="../scripts/common.js"></script>
+    <script>
+      const FORM_ID = 'action-configuration';
+
+      const VALID_TYPES = new Set(['start', 'complete']);
+
+      window.extensionBridge.register({
+        init: (info) => {
+          const { settings } = info;
+          if (settings) {
+            const { uniqueTransactionId = null } = settings;
+            if (uniqueTransactionId === null) {
+              info.settings.uniqueTransactionId = '';
+            }
+
+            setFormValues(FORM_ID, info.settings);
+          }
+        },
+
+        getSettings: () => {
+          const formValues = getFormValues(FORM_ID);
+          const { uniqueTransactionId } = formValues;
+
+          if (uniqueTransactionId === '') {
+            formValues.uniqueTransactionId = null;
+          }
+
+          return formValues;
+        },
+
+        validate: () => {
+          const textFieldSelector = 'input[is="coral-textfield"]';
+          const textFieldInputs = document.querySelectorAll(textFieldSelector);
+          textFieldInputs.forEach((input) => {
+            input.removeAttribute('invalid');
+          });
+          const errorTextFieldSelector = `${textFieldSelector}[name="fieldName"]`;
+
+          const selectFieldSelector = 'coral-select';
+          const selectFieldInputs = document.querySelectorAll(selectFieldSelector);
+          selectFieldInputs.forEach((select) => {
+            select.removeAttribute('invalid');
+          });
+          const errorSelectFieldSelector = `${selectFieldSelector}[name="fieldName"]`;
+
+          const formValues = getFormValues(FORM_ID);
+          const { type, trackingId } = formValues;
+          // uniqueTransactionId can be blank or non-blank, so don't need to validate it
+
+          const typeIsValid = VALID_TYPES.has(type);
+          if (!typeIsValid) {
+            const selector = errorSelectFieldSelector.replace('fieldName', 'type');
+            const errorSelectFieldInputs = document.querySelectorAll(selector);
+            errorSelectFieldInputs.forEach((select) => {
+              select.setAttribute('invalid', '');
+            });
+          }
+
+          const trackingIdIsNotBlank = trackingId.length > 0;
+          const trackingIdIsValid = trackingIdIsNotBlank;
+          if (!trackingIdIsValid) {
+            const selector = errorTextFieldSelector.replace('fieldName', 'trackingId');
+            const errorTextFieldInputs = document.querySelectorAll(selector);
+            errorTextFieldInputs.forEach((input) => {
+              input.setAttribute('invalid', '');
+            });
+          }
+
+          return typeIsValid && trackingIdIsValid;
+        }
+      });
+
+      /**
+       * When the data element selector coral-icon button is clicked,
+       * open Data Collection Tags's data element selector,
+       * then set the coral-icon's nearest input with the selected data element.
+       */
+      const dataButtons = document.querySelectorAll('button[icon="data"]');
+      dataButtons.forEach((button) => {
+        button.addEventListener('click', (event) => {
+          const inputGroup = event.target.closest('div.coral-InputGroup');
+          const inputElement = inputGroup.querySelector('input');
+          window.extensionBridge.openDataElementSelector().then((dataElement) => {
+            inputElement.value = dataElement;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
